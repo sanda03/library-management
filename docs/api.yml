@@ -130,7 +130,7 @@ components:
         bookName:
           type: string
         author:
-        TODO3: add parameter to filter books by intervals of dates of the releaseDate
+        #TODO1: set it as a component with properties : id, name, sex (M or F)
           $ref: '#/components/schemas/Author'
         pageNumbers:
           type: integer
