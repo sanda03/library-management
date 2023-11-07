@@ -94,6 +94,31 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Book"
+  /books/authors:
+    put:
+      tags:
+        - Books
+      summary: Specify a list of books's authors
+      description: Specify the authors of a list of books to the given authors
+      requestBody:
+        description: |
+          A list of object which contain the bookId and it's authorId to set
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/UpdateBookAuthor"
+        required: true
+      responses:
+        200:
+          description: List of books whose authors are specified 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Book"
   /authors:
     get:
       summary: Get all authors
@@ -206,3 +231,15 @@ components:
       enum:
         - M
         - F
+    UpdateBookAuthor:
+      type: object
+      properties:
+        bookId:
+          type: string
+          description: Id of the book to update 
+        authorId:
+          type: string
+          description: Id of the author to set in the book 
+      required:
+        - bookId
+        - authorId
