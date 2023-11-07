@@ -38,18 +38,8 @@ paths:
             type: string
             format: date
           required: false
-        - in: query
-          name: page
-          description: Pagination page which is `1 by default` if null is provided
-          required: false
-          schema:
-            type: integer
-        - in: query
-          name: pageSize 
-          description: Pagination pageSize which is `50 by default` if null is provided
-          required: false
-          schema:
-            type: integer
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PageSize"
       responses:
         200:
           description: The list of filtered books
@@ -146,6 +136,8 @@ paths:
           schema:
             type: string
           required: false
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PageSize"
       responses:
         200:
           description: The list of filtered authors
@@ -255,3 +247,18 @@ components:
       required:
         - bookId
         - authorId
+  parameters:
+    Page:
+      name: page
+      description: Pagination page which is 1 by default is not specified
+      in: query
+      schema:
+        type: integer
+        default: 1
+    PageSize:
+      name: pageSize
+      description: Pagination pageSize which is 50 by default is not specified
+      in: query
+      schema:
+        type: integer
+        default: 50 
