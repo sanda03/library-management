@@ -68,6 +68,32 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CrupdateBook'
+  /books/{bookId}/authors/{authorId}:
+    put:
+      tags:
+        - Books
+      summary: Specify book's author
+      description: Specify the author of the given books to a given author
+      parameters:
+        - in: path
+          name: bookId 
+          description: Id of the book to update 
+          required: true 
+          schema:
+            type: string
+        - in: path
+          name: authorId 
+          description: Id of the author to set in the book 
+          required: true 
+          schema:
+            type: string
+      responses:
+        200:
+          description: The book which was udpated and it's authors
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
   /authors:
     get:
       summary: Get all authors
