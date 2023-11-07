@@ -38,6 +38,18 @@ paths:
             type: string
             format: date
           required: false
+        - in: query
+          name: page
+          description: Pagination page which is `1 by default` if null is provided
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: pageSize 
+          description: Pagination pageSize which is `50 by default` if null is provided
+          required: false
+          schema:
+            type: integer
       responses:
         200:
           description: The list of filtered books
