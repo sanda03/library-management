@@ -71,7 +71,7 @@ paths:
   /books/{bookId}/authors/{authorId}:
     put:
       summary: Link a given book to a given author
-      description: Say who is the of the given book
+      description: Say who is the author of the given book
       tags:
         - Books
       parameters:
@@ -94,6 +94,28 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Book"
+  /books/authors:
+    put:
+      summary: Link a list of given books to a list of given authors
+      description: Say who is the authors of the given books
+      tags:
+        - Books
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/UpdateBookAuthor"
+      responses:
+        200:
+          description: The book which is linked to an author
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Book"
   /authors:
     get:
       summary: Get all authors
@@ -204,3 +226,14 @@ components:
       enum:
         - M
         - F
+    UpdateBookAuthor:
+      type: object
+      properties:
+        bookId:
+          type: string
+        authorId:
+          type: string
+      required:
+        - bookId
+        - authorId 
+
