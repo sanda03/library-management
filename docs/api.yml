@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Library API
-  version: 1.2.1
+  version: 1.3.1
   description: STD22052
 servers:
   - url: https://library.com
@@ -295,6 +295,20 @@ components:
       required:
         - bookId
         - authorId
+    ApiResponse:
+      type: object
+      properties:
+        status:
+          type: object
+          properties:
+            code:
+              type: integer
+              example: 200
+            message:
+              type: string
+              example: Query Successfully 
+        body:
+          type: object
   parameters:
     queryPaginationPage:
       name: page
@@ -326,4 +340,40 @@ components:
         type: integer
         default: 50 
       required: true 
-
+  responses:
+    400:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ApiResponse"
+            example:
+              status:
+                code: 400
+                message: Bad Request
+              body:
+    403:
+      description: Forbiden
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ApiResponse"
+            example:
+              status:
+                code: 403
+                message: Forbiden 
+              body:
+    500:
+      description: Internal Server Error 
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/ApiResponse"
+            example:
+              status:
+                code: 500 
+                message: Internal Server Error 
+              body:
