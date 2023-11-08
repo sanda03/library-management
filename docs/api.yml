@@ -38,6 +38,8 @@ paths:
             type: string
             format: date
           required: false
+        - $ref: "#/components/parameters/PaginationPage"
+        - $ref: "#/components/parameters/PaginationPageSize"
       responses:
         200:
           description: The list of filtered books
@@ -236,4 +238,18 @@ components:
       required:
         - bookId
         - authorId 
-
+  parameters:
+    PaginationPage:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+      description: page for the pagination
+    PaginationPageSize:
+      name: pageSize
+      in: query
+      schema:
+        type: integer
+        default: 50 
+      description: pageSize for the pagination
