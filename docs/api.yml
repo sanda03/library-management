@@ -38,8 +38,8 @@ paths:
             type: string
             format: date
           required: false
-        - $ref: "#/components/parameters/Page"
-        - $ref: "#/components/parameters/PageSize"
+        - $ref: "#/components/parameters/queryPaginationPage"
+        - $ref: "#/components/parameters/queryPaginationPageSize"
       responses:
         200:
           description: The list of filtered books
@@ -136,8 +136,6 @@ paths:
           schema:
             type: string
           required: false
-        - $ref: "#/components/parameters/Page"
-        - $ref: "#/components/parameters/PageSize"
       responses:
         200:
           description: The list of filtered authors
@@ -212,6 +210,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Author'
+  /authors/{page}/{pageSize}:
+    get:
+      summary: Get all with pagination authors
+      operationId: getAuthorsWithPagination
+      tags:
+        - Authors
+      parameters:
+        - name: authorName
+          in: query
+          description: |
+            Filter returned authors by given name. 
+            If not provided, then list is not filtered.
+          schema:
+            type: string
+          required: false
+        - $ref: "#/components/parameters/pathPaginationPage"
+        - $ref: "#/components/parameters/pathPaginationPageSize"
+      responses:
+        200:
+          description: The list of filtered authors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
 components:
   schemas:
     CrupdateBook:
@@ -272,17 +296,34 @@ components:
         - bookId
         - authorId
   parameters:
-    Page:
+    queryPaginationPage:
       name: page
       description: Pagination page which is 1 by default is not specified
       in: query
       schema:
         type: integer
         default: 1
-    PageSize:
+    queryPaginationPageSize:
       name: pageSize
       description: Pagination pageSize which is 50 by default is not specified
       in: query
       schema:
         type: integer
         default: 50 
+    pathPaginationPage:
+      name: page
+      description: Pagination page which is 1 by default is not specified
+      in: path 
+      schema:
+        type: integer
+        default: 1
+      required: true 
+    pathPaginationPageSize:
+      name: pageSize
+      description: Pagination pageSize which is 50 by default is not specified
+      in: path 
+      schema:
+        type: integer
+        default: 50 
+      required: true 
+
