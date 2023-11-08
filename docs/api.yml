@@ -1,13 +1,15 @@
 openapi: 3.0.3
 info:
   title: Library API
-  version: 1.0.0
-  description: STD22001
+  version: 1.2.5
+  description: STD22069
 servers:
   - url: https://library.com
 paths:
   /books:
     get:
+      tags:
+        - Books
       summary: Get all books
       description: The returned books are ordered by updated datetime.
       operationId: getBooks
@@ -18,7 +20,26 @@ paths:
           required: false
           schema:
             type: string
-        #TODO3: add parameter to filter books by intervals of dates of the releaseDate
+        - in: query
+          name: releaseDateMin
+          description: |
+            If  `releaseDateMax` is not provided, `releaseDateMin` is ignored.
+            `releaseDateMin` can not be after `releaseDateMax`.
+          schema:
+            type: string
+            format: date
+          required: false
+        - in: query
+          name: releaseDateMax
+          description: |
+            If  `releaseDateMin` is not provided, `releaseDateMax` is ignored.
+            `releaseDateMax` can not be after `releaseDateMin`.
+          schema:
+            type: string
+            format: date
+          required: false
+        - $ref: "#/components/parameters/PaginationPage"
+        - $ref: "#/components/parameters/PaginationPageSize"
       responses:
         200:
           description: The list of filtered books
@@ -29,6 +50,8 @@ paths:
                 items:
                   $ref: '#/components/schemas/Book'
     put:
+      tags:
+        - Books
       summary: Create or update a list of books
       operationId: crupdateBooks
       requestBody:
@@ -37,7 +60,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/Book'
+                $ref: '#/components/schemas/CrupdateBook'
       responses:
         200:
           description: The list of created or updated books
@@ -46,20 +69,170 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Book'
+                  $ref: '#/components/schemas/CrupdateBook'
+  /books/{bookId}/authors/{authorId}:
+    put:
+      summary: Link a given book to a given author
+      description: Say who is the author of the given book
+      tags:
+        - Books
+      parameters:
+        - in: path
+          name: bookId
+          schema:
+            type: string
+          required: true
+          description: The book to linked to an author
+        - in: path
+          name: authorId 
+          schema:
+            type: string
+          required: true
+          description: The author to linked to a book
+      responses:
+        200:
+          description: The book which is linked to an author
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+  /books/authors:
+    put:
+      summary: Link a list of given books to a list of given authors
+      description: Say who is the authors of the given books
+      tags:
+        - Books
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/UpdateBookAuthor"
+      responses:
+        200:
+          description: The book which is linked to an author
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Book"
   /authors:
-  #TODO2: complete GET (can be filtered by name) - PUT - DELETE
+    get:
+      summary: Get all authors
+      operationId: getAuthors
+      tags:
+        - Authors
+      parameters:
+        - name: authorName
+          in: query
+          description: |
+            Filter returned authors by given name. 
+            If not provided, then list is not filtered.
+          schema:
+            type: string
+          required: false
+        - $ref: "#/components/parameters/PaginationPage"
+        - $ref: "#/components/parameters/PaginationPageSize"
+      responses:
+        200:
+          description: The list of filtered authors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+    put:
+      summary: Create or update authors
+      operationId: crupdateAuthors
+      tags:
+        - Authors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Author'
+      responses:
+        200:
+          description: The list of created or updated authors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+    delete:
+      tags:
+        - Authors
+      operationId: deleteManyAuthor
+      summary: Delete a list of author
+      description: Delete all author which has the ids in the request body
+      parameters:
+        - in: query
+          name: authors_ids
+          description: List of author's id to delete
+          required: true
+          schema: 
+            type: array
+            items:
+              type: string
+      responses:
+        200: 
+          description: List of author's that have been deleted
+          content:
+            application/json: 
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Author"
+  /authors/{aId}:
+    delete:
+      summary: Delete an author
+      operationId: deleteAuthor
+      tags:
+        - Authors
+      parameters:
+        - name: aId
+          in: path
+          description: Author identifier to be deleted
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: The author deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+  /topics:
+    get:
+      tags: 
+        - Topics
+      summary: Get all topics
+      description: Get all topics without filter
+      operationId: getAllTopics
+      responses:
+        200:
+          description: List of the topics
+          content:
+            application/json: 
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Topic"            
 components:
   schemas:
-    Book:
+    CrupdateBook:
       type: object
       properties:
         id:
           type: string
         bookName:
-          type: string
-        author:
-          #TODO1: set it as a component with properties : id, name, sex (M or F)
           type: string
         pageNumbers:
           type: integer
@@ -72,3 +245,53 @@ components:
         releaseDate:
           type: string
           format: date
+      required:
+        - id
+        - bookName
+        - pageNumbers
+    Book: 
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/CrupdateBook"
+      properties:
+        author:
+          $ref: '#/components/schemas/Author'
+    Author:
+      type: object
+      properties:
+        id:
+          type: string
+        authorName:
+          type: string
+        sex:
+          $ref: '#/components/schemas/Sex'
+    Sex:
+      type: string
+      enum:
+        - M
+        - F
+    UpdateBookAuthor:
+      type: object
+      properties:
+        bookId:
+          type: string
+        authorId:
+          type: string
+      required:
+        - bookId
+        - authorId 
+  parameters:
+    PaginationPage:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+      description: page for the pagination
+    PaginationPageSize:
+      name: pageSize
+      in: query
+      schema:
+        type: integer
+        default: 50 
+      description: pageSize for the pagination
