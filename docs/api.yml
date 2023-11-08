@@ -68,6 +68,32 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CrupdateBook'
+  /books/{bookId}/authors/{authorId}:
+    put:
+      summary: Link a given book to a given author
+      description: Say who is the of the given book
+      tags:
+        - Books
+      parameters:
+        - in: path
+          name: bookId
+          schema:
+            type: string
+          required: true
+          description: The book to linked to an author
+        - in: path
+          name: authorId 
+          schema:
+            type: string
+          required: true
+          description: The author to linked to a book
+      responses:
+        200:
+          description: The book which is linked to an author
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
   /authors:
     get:
       summary: Get all authors
