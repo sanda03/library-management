@@ -225,7 +225,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Topic" 
-        put:
+    put:
       summary: Create or update topics 
       operationId: crupdateTopic 
       tags:
@@ -248,6 +248,29 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Author'
+    delete:
+      tags:
+        - Topics
+      summary: Delete a list of topics
+      description: Delete a all topics with the givens ids
+      operationId: deleteTopics
+      parameters:
+        - in: query
+          name: topicsIds
+          schema:
+            type: array
+            items:
+              type: string
+          required: true 
+      responses:
+        200:
+          description: List of topics that was deleted 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Topic" 
 components:
   schemas:
     CrupdateBook:
