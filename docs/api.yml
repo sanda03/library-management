@@ -173,7 +173,7 @@ paths:
         - Authors
       summary: Delete many authors
       description: Delete many authors by given's ids in the request body
-      operationId: deleteListAuthor
+      operationId: deleteAuthors
       parameters:
         - in: query
           name: authorIds
