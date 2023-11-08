@@ -168,6 +168,30 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Author'
+    delete:
+      tags:
+        - Authors
+      summary: Delete many authors
+      description: Delete many authors by given's ids in the request body
+      operationId: deleteListAuthor
+      parameters:
+        - in: query
+          name: authorIds
+          description: Ids of authors to delete
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        200: 
+          description: Array containing list of  the authors deleted
+          content:
+            application/json: 
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Author"
   /authors/{aId}:
     delete:
       summary: Delete an author
