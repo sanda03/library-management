@@ -348,7 +348,17 @@ components:
           type: string
       required:
         - bookId
-        - authorId 
+        - authorId
+    Topic:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      required:
+        - id
+        - name
   parameters:
     PaginationPage:
       name: page
