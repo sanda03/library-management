@@ -364,3 +364,17 @@ components:
         type: integer
         default: 50 
       description: pageSize for the pagination
+    TopicsPaginationPage:
+      name: page
+      in: query
+      schema:
+        type: integer
+        default: 1
+      description: Page for pagination
+    TopicsPaginationPageSize:
+      name: pageSize
+      in: query
+      schema:
+        type: integer
+        default: 10
+      description: Page size for pagination
