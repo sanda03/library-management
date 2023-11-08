@@ -133,6 +133,8 @@ paths:
           schema:
             type: string
           required: false
+        - $ref: "#/components/parameters/PaginationPage"
+        - $ref: "#/components/parameters/PaginationPageSize"
       responses:
         200:
           description: The list of filtered authors
