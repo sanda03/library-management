@@ -330,6 +330,46 @@ paths:
           $ref: "#/components/responses/403"
         500:
           $ref: "#/components/responses/500"
+  /authors/import:
+    post:
+      summary: Import new authors from xlsx file or json file
+      operationId: importAuthors
+      description: Import new authors and generate ids for them 
+      tags:
+        - Authors
+      requestBody:
+        description: File that containing the authors to import
+        content:
+          application/vnd. ms-excel:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/ImportAuthor"
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/ImportAuthor"
+      responses:
+        200:
+          description: The list of imported authors 
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                properties:
+                  body: 
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Author"
+        400:
+          $ref: "#/components/responses/400"
+        403:
+          $ref: "#/components/responses/403"
+        500:
+          $ref: "#/components/responses/500"
 components:
   schemas:
     CrupdateBook:
@@ -360,18 +400,24 @@ components:
       properties:
         author:
           $ref: '#/components/schemas/Author'
-    Author:
+    ImportAuthor:
       type: object
       properties:
-        id:
-          type: string
         authorName:
           type: string
         sex:
           $ref: '#/components/schemas/Sex'
       required:
-        - id
         - authorName
+    Author:
+      type: object
+      properties:
+        id:
+          type: string
+      allOf:
+        - $ref: "#/components/schemas/ImportAuthor"
+      required:
+        - id
     Sex:
       type: string
       enum:
