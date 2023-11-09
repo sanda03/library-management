@@ -6,6 +6,46 @@ info:
 servers:
   - url: https://library.com
 paths:
+  /books/import:
+    post:
+      summary: Import new books from xlsx file or json file
+      operationId: importBooks
+      description: Import new books and generate ids for them 
+      tags:
+        - Books 
+      requestBody:
+        description: File that containing the books to import
+        content:
+          application/vnd. ms-excel:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/ImportBook"
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/ImportBook"
+      responses:
+        200:
+          description: The list of imported books 
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/ApiResponse"
+                properties:
+                  body: 
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Book"
+        400:
+          $ref: "#/components/responses/400"
+        403:
+          $ref: "#/components/responses/403"
+        500:
+          $ref: "#/components/responses/500"
   /books:
     get:
       tags:
@@ -377,6 +417,21 @@ components:
       properties:
         id:
           type: string
+      allOf:
+        - $ref: "#/components/schemas/ImportBook"
+      required:
+        - id
+    Book:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/CreateBook"
+        - $ref: "#/components/schemas/CrupdateBook"
+      properties:
+        author:
+          $ref: '#/components/schemas/Author'
+    CreateBook:
+      type: object
+      properties:
         bookName:
           type: string
         pageNumbers:
@@ -391,15 +446,16 @@ components:
           type: string
           format: date
       required:
-        - id
         - bookName
-    Book:
+    ImportBook:
       type: object
-      allOf:
-        - $ref: "#/components/schemas/CrupdateBook"
       properties:
-        author:
-          $ref: '#/components/schemas/Author'
+        idAuthor:
+          type: string
+      allOf:
+        - $ref: "#/components/schemas/CreateBook"
+      required:
+        - idAuthor
     ImportAuthor:
       type: object
       properties:
