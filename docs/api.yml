@@ -318,6 +318,12 @@ components:
       required:
         - bookId
         - authorId
+    ImportBook:
+      allOf:
+        - $ref: "#/components/schemas/CrupdateBook"
+      properties:
+        authorId:
+          type: string
   parameters:
     queryPaginationPage:
       name: page
