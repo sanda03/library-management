@@ -216,6 +216,29 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Author"
+  /books/import:
+    post:
+      tags:
+        - Books
+      summary: Import a list of books
+      operationId: importBooks
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: "#/components/schemas/ImportBook"
+                - type: string  
+                  format: binary
+      responses:
+        200:
+          description: The list of imported books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
   /authors/{aId}:
     delete:
       summary: Delete an author
