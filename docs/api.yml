@@ -49,6 +49,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Book'
+        400:
+          $ref: '#/components/responses/ApiResponse400'
+        403:
+          $ref: '#/components/responses/ApiResponse403'
+        500:
+          $ref: '#/components/responses/ApiResponse500'
     put:
       tags:
         - Books
@@ -70,6 +76,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CrupdateBook'
+        400:
+          $ref: '#/components/responses/ApiResponse400'
+        403:
+          $ref: '#/components/responses/ApiResponse403'
+        500:
+          $ref: '#/components/responses/ApiResponse500'
   /books/{bookId}/authors/{authorId}:
     put:
       tags:
@@ -96,6 +108,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Book"
+        400:
+          $ref: '#/components/responses/ApiResponse400'
+        403:
+          $ref: '#/components/responses/ApiResponse403'
+        500:
+          $ref: '#/components/responses/ApiResponse500'
   /books/import:
     post:
       tags:
@@ -119,6 +137,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Book'
+        400:
+          $ref: '#/components/responses/ApiResponse400'
+        403:
+          $ref: '#/components/responses/ApiResponse403'
+        500:
+          $ref: '#/components/responses/ApiResponse500'
   /books/authors:
     put:
       tags:
@@ -144,6 +168,12 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Book"
+        400:
+          $ref: '#/components/responses/ApiResponse400'
+        403:
+          $ref: '#/components/responses/ApiResponse403'
+        500:
+          $ref: '#/components/responses/ApiResponse500'
   /authors/{page}/{pageSize}:
     get:
       summary: Get all authors with pagination
@@ -170,6 +200,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Author'
+        400:
+          $ref: '#/components/responses/ApiResponse400'
+        403:
+          $ref: '#/components/responses/ApiResponse403'
+        500:
+          $ref: '#/components/responses/ApiResponse500'
   /authors:
     get:
       summary: Get all authors
@@ -194,6 +230,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Author'
+        400:
+          $ref: '#/components/responses/ApiResponse400'
+        403:
+          $ref: '#/components/responses/ApiResponse403'
+        500:
+          $ref: '#/components/responses/ApiResponse500'
     put:
       summary: Create or update authors
       operationId: crupdateAuthors
@@ -215,6 +257,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Author'
+        400:
+          $ref: '#/components/responses/ApiResponse400'
+        403:
+          $ref: '#/components/responses/ApiResponse403'
+        500:
+          $ref: '#/components/responses/ApiResponse500'
     delete:
       tags:
         - Authors
@@ -239,6 +287,12 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Author"
+        400:
+          $ref: '#/components/responses/ApiResponse400'
+        403:
+          $ref: '#/components/responses/ApiResponse403'
+        500:
+          $ref: '#/components/responses/ApiResponse500'
   
   /authors/import:
     post:
@@ -283,6 +337,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Author'
+        400:
+          $ref: '#/components/responses/ApiResponse400'
+        403:
+          $ref: '#/components/responses/ApiResponse403'
+        500:
+          $ref: '#/components/responses/ApiResponse500'
 components:
   schemas:
     CrupdateBook:
