@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Library API
   version: 1.2.5
-  description: STD22069
+  description: STD2269
 servers:
   - url: https://library.com
 paths:
@@ -108,12 +108,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Book"
-        400:
-          $ref: '#/components/responses/ApiResponse400'
-        403:
-          $ref: '#/components/responses/ApiResponse403'
-        500:
-          $ref: '#/components/responses/ApiResponse500'
   /books/import:
     post:
       tags:
@@ -293,7 +287,32 @@ paths:
           $ref: '#/components/responses/ApiResponse403'
         500:
           $ref: '#/components/responses/ApiResponse500'
-  
+  /authors/{aId}:
+    delete:
+      summary: Delete an author
+      operationId: deleteAuthor
+      tags:
+        - Authors
+      parameters:
+        - name: aId
+          in: path
+          description: Author identifier to be deleted
+          schema:
+            type: string
+          required: true
+      responses:
+        200:
+          description: The author deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        400:
+          $ref: '#/components/responses/ApiResponse400'
+        403:
+          $ref: '#/components/responses/ApiResponse403'
+        500:
+          $ref: '#/components/responses/ApiResponse500'
   /authors/import:
     post:
       tags:
@@ -317,26 +336,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Author'
-  /authors/{aId}:
-    delete:
-      summary: Delete an author
-      operationId: deleteAuthor
-      tags:
-        - Authors
-      parameters:
-        - name: aId
-          in: path
-          description: Author identifier to be deleted
-          schema:
-            type: string
-          required: true
-      responses:
-        200:
-          description: The author deleted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Author'
         400:
           $ref: '#/components/responses/ApiResponse400'
         403:
@@ -409,7 +408,46 @@ components:
         authorId:
           type: string
     ImportAuthor:
-      - $ref: "#/components/schemas/Author"
+       allOf:
+        - $ref: "#/components/schemas/Author"
+    ApiResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: Response Status Code
+          enum:
+                - 200
+                - 400
+                - 403
+                - 500
+        body:
+          type: object
+  responses:
+    ApiResponse400:
+      description:  bad request
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ApiResponse'
+              - type: object
+    ApiResponse403:
+      description: forbidden
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ApiResponse'
+              - type: object
+    ApiResponse500:
+      description: internal server erreur
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ApiResponse'
+              - type: object
   parameters:
     queryPaginationPage:
       name: page
@@ -441,3 +479,4 @@ components:
         type: integer
         default: 50 
       required: true
+ 
