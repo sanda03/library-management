@@ -28,18 +28,7 @@ paths:
                 $ref: "#/components/schemas/ImportBook"
       responses:
         200:
-          description: The list of imported books 
-          content:
-            application/json:
-              schema:
-                type: object
-                allOf:
-                  - $ref: "#/components/schemas/ApiResponse"
-                properties:
-                  body: 
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Book"
+          $ref: "#/components/responses/BookList_200"
         400:
           $ref: "#/components/responses/400"
         403:
@@ -82,18 +71,7 @@ paths:
         - $ref: "#/components/parameters/queryPaginationPageSize"
       responses:
         200:
-          description: The list of filtered books
-          content:
-            application/json:
-              schema:
-                type: object
-                allOf:
-                  - $ref: "#/components/schemas/ApiResponse"
-                properties:
-                  body:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Book"
+          $ref: "#/components/responses/BookList_200"
         400:
           $ref: "#/components/responses/400"
         403:
@@ -114,18 +92,7 @@ paths:
                 $ref: '#/components/schemas/CrupdateBook'
       responses:
         200:
-          description: The list of created or updated books
-          content:
-            application/json:
-              schema:
-                type: object
-                allOf:
-                  - $ref: "#/components/schemas/ApiResponse"
-                properties:
-                  body:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Book"
+          $ref: "#/components/responses/BookList_200"
         400:
           $ref: "#/components/responses/400"
         403:
@@ -153,16 +120,7 @@ paths:
             type: string
       responses:
         200:
-          description: The book which was udpated and it's authors
-          content:
-            application/json:
-              schema:
-                type: object
-                allOf:
-                  - $ref: "#/components/schemas/ApiResponse"
-                properties:
-                  body: 
-                    $ref: "#/components/schemas/Book"
+          $ref: "#/components/responses/Book_200"
         400:
           $ref: "#/components/responses/400"
         403:
@@ -187,18 +145,7 @@ paths:
         required: true
       responses:
         200:
-          description: List of books whose authors are specified 
-          content:
-            application/json:
-              schema:
-                type: object
-                allOf:
-                  - $ref: "#/components/schemas/ApiResponse"
-                properties:
-                  body: 
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Book"
+          $ref: "#/components/responses/BookList_200"
         400:
           $ref: "#/components/responses/400"
         403:
@@ -222,18 +169,7 @@ paths:
           required: false
       responses:
         200:
-          description: The list of filtered authors
-          content:
-            application/json:
-              schema:
-                type: object
-                allOf:
-                  - $ref: "#/components/schemas/ApiResponse"
-                properties:
-                  body: 
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Author"
+          $ref: "#/components/responses/AuthorList_200"
         400:
           $ref: "#/components/responses/400"
         403:
@@ -254,13 +190,7 @@ paths:
                 $ref: '#/components/schemas/Author'
       responses:
         200:
-          description: The list of created or updated authors
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Author'
+          $ref: "#/components/responses/AuthorList_200"
         400:
           $ref: "#/components/responses/400"
         403:
@@ -283,19 +213,8 @@ paths:
             items:
               type: string
       responses:
-        200: 
-          description: Array containing list of  the authors deleted
-          content:
-            application/json: 
-              schema:
-                type: object
-                allOf:
-                  - $ref: "#/components/schemas/ApiResponse"
-                properties:
-                  body: 
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Author"
+        200:
+          $ref: "#/components/responses/AuthorList_200"
         400:
           $ref: "#/components/responses/400"
         403:
@@ -317,16 +236,7 @@ paths:
           required: true
       responses:
         200:
-          description: The author deleted
-          content:
-            application/json:
-              schema:
-                type: object
-                allOf:
-                  - $ref: "#/components/schemas/ApiResponse"
-                properties:
-                  body: 
-                    $ref: "#/components/schemas/Author"
+          $ref: "#/components/responses/Author_200"
         400:
           $ref: "#/components/responses/400"
         403:
@@ -352,18 +262,7 @@ paths:
         - $ref: "#/components/parameters/pathPaginationPageSize"
       responses:
         200:
-          description: The list of filtered authors
-          content:
-            application/json:
-              schema:
-                type: object
-                allOf:
-                  - $ref: "#/components/schemas/ApiResponse"
-                properties:
-                  body: 
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Author"
+          $ref: "#/components/responses/AuthorList_200"
         400:
           $ref: "#/components/responses/400"
         403:
@@ -392,18 +291,7 @@ paths:
                 $ref: "#/components/schemas/ImportAuthor"
       responses:
         200:
-          description: The list of imported authors 
-          content:
-            application/json:
-              schema:
-                type: object
-                allOf:
-                  - $ref: "#/components/schemas/ApiResponse"
-                properties:
-                  body: 
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/Author"
+          $ref: "#/components/responses/AuthorList_200"
         400:
           $ref: "#/components/responses/400"
         403:
@@ -412,6 +300,74 @@ paths:
           $ref: "#/components/responses/500"
 components:
   schemas:
+    ResponseStatus:
+      type: object
+      properties:
+        code:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: OK
+    ResponseBodyTemplate:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/ResponseStatus'
+        body:
+          type: object
+    AuthorListBody:
+      allOf:
+        - $ref: '#/components/schemas/ResponseBodyTemplate'
+        - properties:
+            body:
+              type: array
+              items:
+                $ref: '#/components/schemas/Author'
+    AuthorBody:
+      allOf:
+        - $ref: '#/components/schemas/ResponseBodyTemplate'
+        - properties:
+            body:
+              $ref: '#/components/schemas/Author'
+    BookListBody:
+      allOf:
+        - $ref: '#/components/schemas/ResponseBodyTemplate'
+        - properties:
+            body:
+              type: array
+              items:
+                $ref: '#/components/schemas/Book'
+    BookBody:
+      allOf:
+        - $ref: '#/components/schemas/ResponseBodyTemplate'
+        - properties:
+            body:
+              $ref: '#/components/schemas/Book'
+    BadRequestBody:
+      allOf:
+        - $ref: '#/components/schemas/ResponseBodyTemplate'
+      example:
+        status:
+          code: 400
+          message: BAD REQUEST
+        body: { }
+    ForbiddenBody:
+      allOf:
+        - $ref: '#/components/schemas/ResponseBodyTemplate'
+      example:
+        status:
+          code: 403
+          message: FORBIDDEN
+        body: { } 
+    InternalServerError:
+      allOf:
+        - $ref: '#/components/schemas/ResponseBodyTemplate'
+      example:
+        status:
+          code: 500 
+          message: INTERNAL SERVER ERROR 
+        body: { } 
     CrupdateBook:
       type: object
       properties:
@@ -491,20 +447,6 @@ components:
       required:
         - bookId
         - authorId
-    ApiResponse:
-      type: object
-      properties:
-        status:
-          type: object
-          properties:
-            code:
-              type: integer
-              example: 200
-            message:
-              type: string
-              example: Query Successfully 
-        body:
-          type: object
   parameters:
     queryPaginationPage:
       name: page
@@ -537,39 +479,45 @@ components:
         default: 50 
       required: true 
   responses:
+    AuthorList_200:
+      description: List of Auhors 
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthorListBody'
+    Author_200:
+      description: One Author 
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthorBody'
+    BookList_200:
+      description: List of books
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BookListBody'
+    Book_200:
+      description: One Book
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BookBody'
     400:
       description: Bad Request
       content:
         application/json:
           schema:
-            allOf:
-              - $ref: "#/components/schemas/ApiResponse"
-            example:
-              status:
-                code: 400
-                message: Bad Request
-              body:
+            $ref: '#/components/schemas/BadRequestBody'
     403:
-      description: Forbiden
+      description: Forbidden
       content:
         application/json:
           schema:
-            allOf:
-              - $ref: "#/components/schemas/ApiResponse"
-            example:
-              status:
-                code: 403
-                message: Forbiden 
-              body:
+            $ref: '#/components/schemas/ForbiddenBody'
     500:
-      description: Internal Server Error 
+      description: Internal Server Error
       content:
         application/json:
           schema:
-            allOf:
-              - $ref: "#/components/schemas/ApiResponse"
-            example:
-              status:
-                code: 500 
-                message: Internal Server Error 
-              body:
+            $ref: '#/components/schemas/InternalServerError'
