@@ -447,37 +447,6 @@ components:
       required:
         - bookId
         - authorId
-  parameters:
-    queryPaginationPage:
-      name: page
-      description: Pagination page which is 1 by default is not specified
-      in: query
-      schema:
-        type: integer
-        default: 1
-    queryPaginationPageSize:
-      name: pageSize
-      description: Pagination pageSize which is 50 by default is not specified
-      in: query
-      schema:
-        type: integer
-        default: 50 
-    pathPaginationPage:
-      name: page
-      description: Pagination page which is 1 by default is not specified
-      in: path 
-      schema:
-        type: integer
-        default: 1
-      required: true 
-    pathPaginationPageSize:
-      name: pageSize
-      description: Pagination pageSize which is 50 by default is not specified
-      in: path 
-      schema:
-        type: integer
-        default: 50 
-      required: true 
   responses:
     AuthorList_200:
       description: List of Auhors 
@@ -521,3 +490,34 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/InternalServerError'
+  parameters:
+    queryPaginationPage:
+      name: page
+      description: Pagination page which is 1 by default is not specified
+      in: query
+      schema:
+        type: integer
+        default: 1
+    queryPaginationPageSize:
+      name: pageSize
+      description: Pagination pageSize which is 50 by default is not specified
+      in: query
+      schema:
+        type: integer
+        default: 50 
+    pathPaginationPage:
+      name: page
+      description: Pagination page which is 1 by default is not specified
+      in: path 
+      schema:
+        type: integer
+        default: 1
+      required: true 
+    pathPaginationPageSize:
+      name: pageSize
+      description: Pagination pageSize which is 50 by default is not specified
+      in: path 
+      schema:
+        type: integer
+        default: 50 
+      required: true 
