@@ -423,7 +423,37 @@ components:
                 - 500
         body:
           type: object
+  ListOfBooks:
+      allOf:
+        - $ref: "#/components/schemas/ApiResponse"
+        - properties:
+            body:
+              type: array
+              items:
+                    $ref: "#/components/schemas/Book"
+    ListOfAuthors:
+      allOf:
+        - $ref: "#/components/schemas/ApiResponse"
+        - properties:
+            body:
+              type: array
+              items:
+                    $ref: "#/components/schemas/Author"
   responses:
+    BookList:
+      description: Query Successfully
+      content:
+        appliction/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ListOfBooks'
+    AuthorList:
+      description: Query Successfully
+      content:
+        appliction/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/ListOfAuthors'
     ApiResponse400:
       description:  bad request
       content:
