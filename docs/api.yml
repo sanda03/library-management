@@ -431,7 +431,7 @@ components:
             allOf:
               - $ref: '#/components/schemas/OneBook'
     BookList_200:
-      description: Query Successfully
+      description: List of Books
       content:
         appliction/json:
           schema:
@@ -445,7 +445,7 @@ components:
             allOf:
               - $ref: '#/components/schemas/OneAuthor'
     AuthorList_200:
-      description: Query Successfully
+      description: List of Authors 
       content:
         appliction/json:
           schema:
