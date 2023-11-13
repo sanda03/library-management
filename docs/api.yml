@@ -298,6 +298,69 @@ paths:
           $ref: "#/components/responses/403"
         500:
           $ref: "#/components/responses/500"
+  /visitors:
+    get:
+      summary: Get all visitors 
+      operationId: getVisitors
+      tags:
+        - Visitors 
+      parameters:
+        - $ref: "#/components/parameters/queryPaginationPageSize"
+        - $ref: "#/components/parameters/queryPaginationPage"
+      responses:
+        200:
+          $ref: "#/components/responses/VisitorList_200"
+        400:
+          $ref: "#/components/responses/400"
+        403:
+          $ref: "#/components/responses/403"
+        500:
+          $ref: "#/components/responses/500"
+    put:
+      summary: Create or update visitors
+      operationId: crupdateVisitors
+      tags:
+        - Visitors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Visitor'
+      responses:
+        200:
+          $ref: "#/components/responses/VisitorList_200"
+        400:
+          $ref: "#/components/responses/400"
+        403:
+          $ref: "#/components/responses/403"
+        500:
+          $ref: "#/components/responses/500"
+    delete:
+      tags:
+        - Visitors
+      summary: Delete many visitors 
+      description: Delete many visitors by given's ids in the request body
+      operationId: deleteVisitors
+      parameters:
+        - in: query
+          name: vistiorsIds
+          description: Ids of visitors to delete
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        200:
+          $ref: "#/components/responses/VisitorList_200"
+        400:
+          $ref: "#/components/responses/400"
+        403:
+          $ref: "#/components/responses/403"
+        500:
+          $ref: "#/components/responses/500"
 components:
   schemas:
     ResponseStatus:
@@ -316,6 +379,20 @@ components:
           $ref: '#/components/schemas/ResponseStatus'
         body:
           type: object
+    VisitorListBody:
+      allOf:
+        - $ref: '#/components/schemas/ResponseBodyTemplate'
+        - properties:
+            body:
+              type: array
+              items:
+                $ref: '#/components/schemas/Visitor'
+    VisitorBody:
+      allOf:
+        - $ref: '#/components/schemas/ResponseBodyTemplate'
+        - properties:
+            body:
+              $ref: '#/components/schemas/Visitor'
     AuthorListBody:
       allOf:
         - $ref: '#/components/schemas/ResponseBodyTemplate'
@@ -447,7 +524,32 @@ components:
       required:
         - bookId
         - authorId
+    Visitor:
+      type: object
+      properties:
+        id: 
+          type: string
+        name: 
+          type: string
+        ref:
+          type: string
+      required:
+        - id
+        - name 
+        - ref 
   responses:
+    VisitorList_200:
+      description: List of visitor 
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VisitorListBody'
+    Visitor_200:
+      description: One Visitor 
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VisitorBody'
     AuthorList_200:
       description: List of Auhors 
       content:
