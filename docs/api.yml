@@ -1,10 +1,13 @@
 openapi: 3.0.3
 info:
   title: Library API
-  version: 1.3.1
-  description: STD22052
+  version: 1.4.1
+  description: STD22052 STD22069
 servers:
   - url: https://library.com
+security:
+  - oauth2: []
+
 paths:
   /books/import:
     post:
@@ -13,6 +16,8 @@ paths:
       description: Import new books and generate ids for them 
       tags:
         - Books 
+      security:
+        - oauth2: [ admin ]
       requestBody:
         description: File that containing the books to import
         content:
@@ -42,6 +47,8 @@ paths:
       summary: Get all books
       description: The returned books are ordered by updated datetime.
       operationId: getBooks
+      security:
+        - oauth2: []
       parameters:
         - in: query
           name: bookName
@@ -276,6 +283,8 @@ paths:
       description: Import new authors and generate ids for them 
       tags:
         - Authors
+      security:
+        - oauth2: [ admin ]
       requestBody:
         description: File that containing the authors to import
         content:
@@ -376,6 +385,8 @@ paths:
               type: array
               items:
                 $ref: "#/components/schemas/BorrowReturnRequest"
+      security:
+        - oauth2: [admin]
       responses:
         200:
           description: Books successfully borrowed
@@ -407,6 +418,8 @@ paths:
               type: array
               items:
                 $ref: "#/components/schemas/BorrowReturnRequest"
+      security:
+        - oauth2: [admin]
       responses:
         200:
           description: Books successfully returned
@@ -505,15 +518,16 @@ paths:
       operationId: getVisitorActivity
       tags:
         - Visitors
+      parameters:
+        - in: path
+          name: visitorId
+          description: Id of the visitor to get activity
+          schema: 
+            type: string
+          required: true
       responses:
         200:
-          description: List of visitor activities
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/VisitorActivity"
+          $ref: "#/components/responses/VisitorActivityList_200"
         400:
           $ref: "#/components/responses/400"
         403:
@@ -521,6 +535,16 @@ paths:
         500:
           $ref: "#/components/responses/500"
 components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://library.token.com 
+          scopes:
+            anonyme: User not authentificated
+            admin: User authentificated  as visitor
+            visitor: User authentificated  as visitor
   schemas:
     VisitorActivity:
       type: object
@@ -545,8 +569,6 @@ components:
           type: array
           items:
             type: string
-        items:
-          type: string
 
     BorrowReturnResponse:
       type: object
@@ -590,6 +612,14 @@ components:
         - properties:
             body:
               $ref: '#/components/schemas/Visitor'
+    VisitorActivityList:
+      allOf:
+        - $ref: '#/components/schemas/ResponseBodyTemplate'
+        - properties:
+            body:
+              type: array
+              items:
+                $ref: '#/components/schemas/VisitorActivity'
     AuthorListBody:
       allOf:
         - $ref: '#/components/schemas/ResponseBodyTemplate'
@@ -759,6 +789,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/AuthorBody'
+    VisitorActivityList_200:
+      description: List of visitor's activities 
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VisitorActivityList'
     BookList_200:
       description: List of books
       content:
